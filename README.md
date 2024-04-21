@@ -60,12 +60,10 @@ This project is created and maintained by :
 <h2>Additional Setup Instructions</h2>
     <p>To integrate Twilio for authentication:</p>
     <ul>
-        <li>Add your Twilio Auth token, SID, recipient, and number from your Twilio account to <code>views.py</code> in line 102.</li>
+        <li>Add your Twilio Auth token, SID, recipient number, and your Twilio number from your Twilio account to <code>views.py</code> in line 186.</li>
     </ul>
-
     <p>To add Tawk.to API for a chatbot:</p>
     <ul>
-        <li>Add your Tawk.to API in <code>index.html</code> for the chatbot in line 76.</li>
+        <li>Add your Tawk.to API in <code>index.html</code> for the chatbot in line 122.</li>
     </ul>
-</body>
-</html>
+
