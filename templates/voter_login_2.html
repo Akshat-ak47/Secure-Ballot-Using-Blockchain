@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- STYLE -->
+    <link rel="stylesheet" href="{% static 'assets/css/voter.css' %}"> <!-- Updated CSS link -->
+</head>
+<body>
+    <!-- Form Container -->
+    <div class="form-container">
+        <div class="col col-1">
+            <div class="image-layer">
+                <img alt src="{% static 'assets/img/white-outline.png' %}" class="form-image-main"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/dots.png' %}" class="form-image dots"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/coin.png' %}" class="form-image coin"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/spring.png' %}" class="form-image spring"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/rocket.png' %}" class="form-image rocket"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/cloud.png' %}" class="form-image cloud"> <!-- Updated image source -->
+                <img alt src="{% static 'assets/img/stars.png' %}" class="form-image stars"> <!-- Updated image source -->
+            </div>
+            <p class="featured-words">You are Few Minutes away to Choose Your Winning Team with blockchain <span> Secure Ballot </span></p>
+        </div>
+        <div class="col col-2">
+            <div class="btn-box">
+                <button class="btn btn-1" id="login">Sign In</button>
+                <button class="btn btn-2" id="register">Sign Up</button>
+            </div>
+            <!-- Login Form Container -->
+            <form id="login-form" method="post" action="{% url 'login_view' %}">
+                {% csrf_token %}
+            <div class="login-form">
+                <div class="form-title">
+                    <span>Sign In</span>
+                </div>
+                <div class="error-message">
+                    {% if error_message %}
+                        <div class="warning-box">
+                            <span class="error-text">{{ error_message }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-inputs">
+                    <div class="input-box">
+                        <input type="text" class="input-field" name="aadhar_number" placeholder="Aadhar Number" required>
+                        <i class="bx bx-user icon"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt icon"></i>
+                    </div>
+                    <div class="forgot-pass">
+                        <a href="#" style="color: white; text-decoration: underline;">Forgot Password?</a>
+                    </div>
+                    <div class="input-box">
+                        <button class="input-submit">
+                            <span>Sign In</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% comment %} </div> {% endcomment %}
+        </form>
+            <!-- Registration Form Container -->
+            <form id="signup-form" method="post" action="{% url 'signup_view' %}">
+                {% csrf_token %}
+            <div class="register-form">
+                <div class="form-title">
+                    <span>Create Account</span>
+                </div>
+                <div class="form-inputs">
+                    <div class="input-box">
+                        <input type="text" class="input-field" name="aadhar_number" placeholder="Aadhar Number" required>
+                        <i class="bx bx-envelope icon"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="primary_password" placeholder="Primary Password" required>
+                        <i class="bx bx-lock-alt icon"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="secondary_password" placeholder="Secondary Password" required>
+                        <i class="bx bx-lock-alt icon"></i>
+                    </div>
+                    <div class="forgot-pass">
+                        <a href="#">Forgot Password?</a>
+                        
+                    </div>
+                    <div class="input-box">
+                        <button class="input-submit">
+                            <span>Sign Up</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    <!-- JS -->
+<script src="{% static 'assets/js/voter_main.js' %}"></script> <!-- Updated JavaScript source -->
+
+</body>
+</html>

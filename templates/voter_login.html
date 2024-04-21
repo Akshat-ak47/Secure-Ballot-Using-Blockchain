@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="./static/assets/css/voter.css">"
+
+
+<link rel="stylesheet" href="{% static 'assets/css/voter.css' %}">
+    <title>SecureBallot Login</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form id="signup-form" method="post" action="{% url 'signup_view' %}">
+                {% csrf_token %}
+                <h1 class="heading-right">Create Account</h1>
+                <span>Use your Adhaar Number to set up</span>
+                    <input type="text" name="aadhar_number" placeholder="Aadhaar Number" required>
+
+                    <input type="password" class="input-field" name="primary_password" placeholder="Primary Password" required>
+ 
+                    <input type="password" class="input-field" name="secondary_password" placeholder="Secondary Password" required>
+
+                    <div class="forgot-pass">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+   
+        <div class="form-container sign-in">
+            <form id="login-form" method="post" action="{% url 'login_view' %}">
+                {% csrf_token %}
+                <h1 class="heading-left">Sign In</h1>
+                <span>Get back by signing in</span>
+                <input type="text" class="input-field" name="aadhar_number" placeholder="Aadhar Number" required>
+
+                <input type="password" class="input-field" name="password" placeholder="Password" required>
+
+                    <button type="submit">Log In</button>
+                
+            </form>
+        </div>
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back</h1>
+                    <p>Resume Your Work</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello There</h1>
+                    <p>Create an account</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="./static/assets/js/voter_main.js"></script>
+</html>

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/css/verify_otp1.css' %}">
+    <title>Voter Otp</title>
+</head>
+<body>
+    <div class="otp-card">
+        <h1>Verification</h1>
+        <div class="otp-card-inputs">
+            <input type="text" maxlength="1" autofocus>
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+        </div>
+        <p id="otp-message"></p>
+        <p>Didn't get the OPT <a href="#">RESEND</a></p>
+        <button id="verify-otp">Verify</button>
+
+    </div>
+</body>
+
+<script>
+    var attempts = 0;
+    window.addEventListener('DOMContentLoaded', function () {
+        fetch('/send_otp/')
+            .then(response => response.json())
+            .then(data => console.log('OTP sent:', data))
+            .catch(error => console.error('Error sending OTP:', error));
+    });
+
+    document.getElementById('verify-otp').addEventListener('click', function () {
+        var enteredOTP = ''; 
+        var inputs = document.querySelectorAll('.otp-card-inputs input'); 
+        inputs.forEach(function(input) { 
+            enteredOTP += input.value; 
+        }); 
+        var sentOTP = "55555"; 
+        
+        if (enteredOTP === sentOTP) { 
+            window.location.href = "{% url 'home' %}"; 
+        } else { 
+            attempts++; 
+            if (attempts === 3) { 
+                alert("Three attempts done. Redirecting to login page."); 
+                window.location.href = "{% url 'voter_login' %}"; 
+            } else { 
+                document.getElementById('otp-message').innerText = "Wrong OTP. Please try again. Attempt " + attempts + "/3"; 
+                setTimeout(function () { 
+                    document.getElementById('otp-message').innerText = ""; 
+                }, 3000); 
+            } 
+        } 
+    });
+</script>
+<script src="{% static 'assets/js/verify_otp1.js' %}"></script>
+</html>

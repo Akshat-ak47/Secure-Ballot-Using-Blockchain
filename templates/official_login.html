@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Officials Login | Registration</title>
+        <!-- META SECTION -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{% static 'assets/css/official_login.css' %}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="form signup">
+                <form method="POST" action="{% url 'official_signup_view' %}">
+                    {% csrf_token %}
+                    <h2>Sign Up</h2>
+                    <div class="inputBox">
+                        <input type="text" name="full_name" required="required">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Full Name</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="username" required="required">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Username</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="email" required="required">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>Email</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="aadhar_number" required="required">
+                        <i class="fa-regular fa-id-card"></i>
+                        <span>Aadhar Number</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="password" required="required">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Password</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="submit" value="Create Account">
+                    </div>
+                </form>
+                <p>Already a member ? <a href="#" class="login">Log in</a></p>
+            </div>
+        
+            <div class="form signin" id="#form-signin">
+                <h2>Sign In</h2>
+                <form method="POST" action="{% url 'login_view' %}">
+                    {% csrf_token %}
+                    <div class="inputBox">
+                        <input type="text" name="username" required="required">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Username</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="aadhar_number" required="required">
+                        <i class="fa-regular fa-id-card"></i>
+                        <span>Aadhar Number</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="password" required="required">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Password</span>
+                    </div>
+                    <div class="inputBox">
+                        <input type="submit" value="Login">
+                    </div>
+                    <p>Not Registered ? <a href="#" class="create">Create an account</a></p>
+                </form>
+            </div>
+        </div>
+        <script src="{% static 'assets/js/official_login.js' %}"></script>
+            <script>
+                let login = document.querySelector('.login');
+                let create = document.querySelector('.create');
+                let container = document.querySelector('.container');
+
+                login.onclick = function(){
+                    container.classList.add('signinForm');
+                }
+                create.onclick = function(){
+                    container.classList.remove('signinForm');
+                }
+            </script>
+
+
+    </body>
+</html>

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification</title>
+    <link rel="stylesheet" href="../static/assets/css/verify_cert.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glow-box">
+            <h2>Verify Certificate</h2>
+            <form id="verificationForm">
+                <input type="text" id="code" placeholder="Enter code" required>
+                <button type="submit">Verify</button>
+            </form>
+            
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var csrftoken = '{{ csrf_token }}';
+        $('#verificationForm').submit(function(event) {
+            event.preventDefault();
+            var verificationCode = $('#code').val();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/verify_certificate/',
+                data: {
+                    'verification_code': verificationCode,
+                    'csrfmiddlewaretoken': csrftoken
+                },
+                success: function(data) {
+                    if (data.exists) {
+                        alert('Certificate verified for user with Aadhar number: ' + data.aadhar_number);
+                    } else {
+                        alert('Certificate not found!');
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+    });
+    
+</script>
+</html>

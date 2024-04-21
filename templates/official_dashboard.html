@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Ballot Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/official_dashboard.css' %}">
+</head>
+<body>
+    <div id="sidebar">
+        <h2>Secure Ballot</h2>
+        <ul>
+            <li id="dashboard" onclick="showSection('dashboard')">Dashboard</li>
+            <li id="event" onclick="showSection('event')">Event</li>
+            <li id="profile" onclick="showSection('profile')">Profile</li>
+            <!-- <li id="settings" onclick="showSection('settings')">Settings</li> -->
+            <li id="logout" onclick="logout()">Logout</li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="dashboard-section">
+            <h2>Dashboard Section</h2>
+                <div id="upcoming-events" class="event-blocks">
+                    <h3>Events</h3>
+                    <script>
+                        var teamsData = {{ request.session.teams|safe }};
+                    </script>
+                        {% for eventss in request.session.events %}
+                        {% with teamsData=request.session.teams|safe %}
+                    <script>
+                        var teamsData = {{ teamsData|safe }};
+                    </script>
+                    <div class="event-block" onclick="showPopup('{{ eventss.event_name }}', '{{ eventss.event_id }}', '{{ eventss.event_purpose }}', teamsData)">
+                        {{ eventss.event_name }}
+                        <button class="result-button">Result</button>
+                </div>
+            {% endwith %}
+            {% endfor %}
+            
+        </div>
+            <!-- Popup container -->
+            <div id="team-details-popup" class="popup">
+    <!-- Content of the popup will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Popup Window -->
+      <div id="popup-window">
+        <div id="popup-header">
+            <div class="cut-option" onclick="closePopup()">X</div>
+        </div>
+        <div id="popup-content">
+            <!-- Popup content will be dynamically inserted here -->
+            <!-- No need to include specific content here -->
+        </div>
+    </div>
+        
+        <div id="event-section" style="display: none;">
+            <h2 style="text-align: center;">Organize Event</h2>
+            <div id="organize-event-options">
+                <button onclick="openPopup()">+ Organize Event</button>
+            </div>
+            <!-- Table to display events -->
+            <table id="event-table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Purpose</th>
+                    </tr>
+                </thead>
+                <tbody id="event-table-body">
+                    <!-- Event details will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Popup for organizing event -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h3>Organize Event</h3>
+                <form id="event-form" onsubmit="addEvent(event)">
+                    {% csrf_token %}
+                    <label for="event-name">Event Name:</label><br>
+                    <input type="text" id="event-name" name="event-name"><br>
+                    <label for="num-teams">Number of Teams/Parties:</label><br>
+                    <input type="number" id="num-teams" name="num-teams"><br>
+                    <input type="number" id="num-teams" name="num-teams" onchange="addPartyRows()"><br>
+                    <div id="party-rows">
+                        <!-- Party name and image fields will be dynamically added here -->
+                    </div>
+                    <label for="event-purpose">Purpose of Event:</label><br>
+                    <textarea id="event-purpose" name="event-purpose"></textarea><br>
+                    <button type="submit">OK</button>
+                    <button type="button" class="cancel" onclick="closePopup()">Cancel</button>
+                </form>
+            </div>
+        </div>
+        <!-- Event details popup -->
+        <div id="event-popup" class="popup">
+            <div class="popup-content" id="event-popup-content">
+                <span class="close" onclick="closeEventPopup()">&times;</span>
+            </div>
+        </div>
+                <!-- Event details will be inserted here dynamically -->
+            </div>
+        </div>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <div id="profile-section" style="display: none;">
+            <h6>&nbsp;</h6>
+            <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Profile Section</h2>
+            <div class="profile-info container">
+                <p>Username: <span id="username">{{ username }}</span></p>
+                <p>Full Name: <span id="full_name">{{ full_name }}</span></p>
+                <p>Email: <span id="email">{{ email }}</span></p>
+                <p>Phone Number: <span id="phone_number">{{ phone_number }}</span></p>
+                <p>Age: <span id="age">{{ age }}</span></p>
+            </div>
+        </div>
+        <div id="settings-section" style="display: none;">
+            <h2>Settings Section</h2>
+            <!-- Add your settings content here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+function showPopup(eventName, eventId, eventPurpose, teamData) {
+    console.log("Showing popup for event:", eventName); // Debugging statement
+    $('#popup-window').show();
+    $('#popup-content').empty();
+    let teamArray = [];
+    try {
+        teamArray = JSON.parse(teamData[eventId]);
+    } catch (error) {
+        console.error('Error parsing team data:', error);
+    }
+    if (eventName === 'Harmony Poll: The Ayodhya Accord') {
+        $('#popup-content').html(`
+        <h2>${eventName}</h2>
+        <div class="event-details">
+            <p>
+                    The Harmony Poll: The Ayodhya Accord aims to engage the community in a constructive dialogue, fostering a spirit of reconciliation and collective decision-making regarding the development of the Ayodhya site. It’s a platform for people to voice their opinions and vote on proposals that honor the diverse cultural and historical significance of the location, while looking forward to a peaceful and inclusive future.
+                </p>
+                <div class="event-images">
+                    <img src="/static/assets/img/ram_mandir.jpg" alt="Ram Mandir" style="float: left; margin-right: 10px;">
+                    <img src="/static/assets/img/babri_masjid.jpg" alt="Babri Masjid" style="float: right; margin-left: 10px;">
+                </div>
+                <div style="clear: both;"></div>
+                <div class="vote-options">
+                    <button id="vote-for">Vote</button>
+                    <button id="vote-against">Vote</button>
+                </div>
+                <div id="result" style="text-align: center;">
+                    <h3>Result</h3>
+                    <p>Ram Mandir - 100 votes</p>
+                    <p>Babri Masjid - 1 vote</p>
+                    <p>Winner - Ram Mandir</p>
+                </div>
+            </div>
+            `);
+
+        $('#vote-for').click(function() {
+            alert('Event has ended');
+        });
+        
+        $('#vote-against').click(function() {
+            alert('Event has ended');
+        });
+    } else {
+        let teamsHTML = '';
+        // Check if teamArray is an array and not empty
+        if (Array.isArray(teamArray) && teamArray.length > 0) {
+            teamArray.forEach(team => {
+                let imagePath = `../${team.fields.image}`;
+                teamsHTML += `
+                    <div class="team">
+                        <img src="../static/${team.fields.image}" alt="${team.fields.name}" style="width: 100px; height: 100px;">
+                        <p>${team.fields.name}</p>
+                    </div>
+                `;
+            });
+            verifyButtonHTML = '<button id="verify-button">Verify</button>';
+        } else {
+            teamsHTML = '<p>No teams found for this event.</p>';
+        }
+
+        $('#popup-content').html(`
+        <h2>${eventName}</h2>
+        <h4>${eventId}</h4>
+        <h4>${eventPurpose}</h4>
+        <div class="teams-container">
+            ${teamsHTML}
+        </div>
+        ${verifyButtonHTML}
+    `);
+}
+}
+$(document).on('click', '#verify-button', function() {
+    // Extract event ID from the popup content
+    const eventId = $('#popup-content').find('h4').eq(0).text().trim();
+    
+    // Extract team names from the popup content
+    const teamNames = [];
+    $('#popup-content').find('.team p').each(function() {
+        teamNames.push($(this).text().trim());
+    });
+    
+    // Get CSRF token from the hidden input field
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // Send the event ID and team names to the backend
+    $.ajax({
+        url: '/verify-vote/',
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }, // Include CSRF token in headers
+        data: {
+            event_id: eventId,
+            team_names: teamNames
+        },
+        success: function(response) {
+            // Handle success response
+            console.log('Team names sent successfully:', response);
+            // Redirect to verify-vote page
+            window.location.href = '/verify-vote/';
+        },
+        error: function(xhr, status, error) {
+            // Handle error response
+            console.error('Error sending team names:', error);
+            // Redirect to verify-vote page
+            window.location.href = '/verify-vote/';
+        }
+    });
+});
+
+
+</script>
+    <script src="{% static 'assets/js/official_dashboard.js' %}"></script>
+    <script>
+        function logout() {
+            fetch('/logout/', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redirect to the login page
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <script>
+        var teamsData = {{ request.session.teams|json_script }};
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="./static/assets/css/home.css">
+    <link rel="stylesheet" href="{% static 'assets/css/home.css' %}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="text-center">
+            <div class="profile-container">
+                <div class="profile"></div>
+            </div>
+            <div class="unique-address">{{ user.primaryvoterdatabase.unique_address|slice:":8" }}</div>
+        </div>
+        
+        <div class="section" onclick="openSection('dashboard')">Dashboard</div>
+        <div class="section" onclick="openSection('history')">History</div>
+        <div class="section" onclick="openSection('profile')">Profile</div>
+        <div class="section" onclick="openSection('settings')">Settings</div>
+        <div class="section" id="darkMode" onclick="toggleDarkMode()">Dark Mode</div>
+        <div class="section" onclick="openSection('contact')">Contact Us</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <form id="logout-form" action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary logout-button">Logout</button>
+        </form>
+        <div id="dashboard">
+          <h2>Dashboard Section</h2>
+          <div id="upcoming-events" class="event-blocks">
+            <h3>Upcoming Events</h3>
+            <script>
+                var teamsData = {{ request.session.teams|safe }};
+            </script>
+            {% for eventss in request.session.events %}
+    {% with teamsData=request.session.teams|safe %}
+        <script>
+            var teamsData = {{ teamsData|safe }};
+        </script>
+        <div class="event-block" onclick="showPopup('{{ eventss.event_name }}', '{{ eventss.event_id }}', '{{ eventss.event_purpose }}', teamsData)">
+            {{ eventss.event_name }}
+        </div>
+    {% endwith %}
+{% endfor %}
+
+        </div>
+        
+        </div>
+        <div id="popup-container" style="display: none;">
+            <div id="event-popup" class="popup">
+              <h2 id="popup-event-name"></h2>
+          <p><strong>Event ID:</strong> <span id="popup-event-id"></span></p>
+          <p><strong>Event Purpose:</strong> <span id="popup-event-purpose"></span></p>
+          <div id="team-container">
+            <!-- Teams will be dynamically added here -->
+        </div>
+            </div>
+        </div>
+
+          <div id="past-events" class="event-blocks">
+            <h3>Past Events</h3>
+          </div>
+      </div>
+      
+      
+      <!-- Popup Window -->
+      <div id="popup-window">
+        <div id="popup-header">
+            <div class="cut-option" onclick="closePopup()">X</div>
+        </div>
+        <div id="popup-content">
+            <!-- Popup content will be dynamically inserted here -->
+            <!-- No need to include specific content here -->
+        </div>
+    </div>
+      
+        <div id="history" style="display: none;">
+            History Content
+        </div>
+        <div id="profile" style="display: none;">
+            {% if profile_data %}
+                <table id="profile-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Unique Address</td>
+                        <td>{{ profile_data.unique_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Aadhar Number</td>
+                        <td>{{ profile_data.aadhar_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Age</td>
+                        <td>{{ profile_data.age }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Number</td>
+                        <td>{{ profile_data.mobile_number }}</td>
+                    </tr>
+                </table>
+            {% else %}
+                <p>No profile data available</p>
+            {% endif %}
+        </div>
+        <div id="settings" style="display: none;">
+            Settings Content
+        </div>
+        <div id="contact" style="display: none;">
+            Contact Us Content
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="./static/assets/js/home.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'assets/js/home.js' %}"></script>
+    <script>
+        var teamsData = {{ request.session.teams|json_script }};
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Vote</title>
+    <link rel="stylesheet" href="{% static 'assets/css/verify_vote.css' %}">
+    <style>
+        #team-counts {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 400px; /* Adjust the width as needed */
+            margin: 0 auto; /* Center the box */
+        }
+    
+        #team-counts ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        #team-counts li {
+            margin-bottom: 10px;
+        }
+    
+        /* For 2 teams */
+        #team-counts ul:nth-child(2n) {
+            text-align: right;
+        }
+    
+        /* For 3 teams */
+        #team-counts ul:nth-child(odd) {
+            text-align: right;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="content-box">
+            <h2>RESULTS</h2>
+            <div id="team-counts">
+                {% if team_counts %}
+                    <ul>
+                        {% for team_name, count in team_counts.items %}
+                            <li>{{ team_name }}: {{ count }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No team counts available</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="button-container">
+            <a href="{% url 'official_dashboard' %}" class="back-btn">Back to Home</a>
+            <a href="#" class="verify-btn">Verify Now</a>
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.verify-btn').click(function(){
+        $.ajax({
+            url: "{% url 'verify_votes' %}",
+            type: "GET",
+            success: function(response){
+                if(response.tampered){
+                    alert("Votes are tampered!");
+                } else {
+                    alert("Votes are not tampered.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+}
+
+.content-box {
+    background-color: #333;
+    box-shadow: 0 10px 20px 10px rgba(243, 220, 220, 0.5);
+    padding: 50px 100px;
+    border-radius: 10px;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: #fff;
+    text-align: center;
+}
+
+.content-box h2 {
+    margin-top: 10px; /* Remove default margin */
+    color: #6e64ed;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+#team-counts{
+    display: block;
+    font-size: 17px;
+    text-decoration: none;
+}
+
+.back-btn {
+    position: absolute;
+    background-color: #6e64ed;
+    bottom: 20px;
+    left: 25%;
+    /* transform: translateX(-120%); */
+    color: #fff;
+    text-decoration: none;
+    /* border: 1px solid #fff; */
+    padding: 19.8px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.verify-btn{
+    position: absolute;
+    background-color: #6e64ed;
+    bottom: 20px;
+    left: 55%;
+    /* transform: translateX(20%); */
+    color: #fff;
+    text-decoration: none;
+    padding: 20px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.verify-btn:hover {
+    background-color: #fff;
+    color: #000;
+}

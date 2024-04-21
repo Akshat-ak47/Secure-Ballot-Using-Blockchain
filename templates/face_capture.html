@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Capture</title>
+<link rel="stylesheet" href="{% static 'assets/css/face_capture.css' %}">
+</head>
+<body>
+<div class="container">
+  <h1>Face Capture</h1>
+  <div class="camera-feed">
+    <video id="video" playsinline autoplay></video>
+  </div>
+  <div class="capture-btn">
+    <button id="capture-btn">Capture</button>
+    <button id="register-btn">Register</button>
+  </div>
+</div>
+<!-- Hidden input fields to store user data -->
+<input type="hidden" id="aadhar_number" value="{{ aadhar_number }}">
+<input type="hidden" id="primary_password" value="{{ primary_password }}">
+<input type="hidden" id="secondary_password" value="{{ secondary_password }}">
+<input type="hidden" id="mobile_number" value="{{ mobile_number }}">
+</div>
+</div>
+<script src="{% static 'assets/js/face_capture.js' %}"></script>
+<script>
+    const csrfToken = '{{ csrf_token }}';
+</script>
+</body>
+</html>

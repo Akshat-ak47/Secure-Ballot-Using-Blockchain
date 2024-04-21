@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User or Official</title>
+  <link rel="stylesheet" href="{% static 'assets/css/whoru.css' %}">
+</head>
+<body>
+  <video autoplay muted loop id="video-background">
+    <source src="{% static '/assets/video/whoru_video.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="container">
+    <div class="prompt"><button class="button-89" role="button">ARE YOU A USER OR AN OFFICIAL?</button></div>
+    <div class="btn-container">
+      <button class="btn btn1" id="voterBtn">Voter</button>
+      <button class="btn btn2" id="officialBtn">Official</button>
+    </div>
+  </div>
+  <script src="{% static 'assets/js/whoru.js' %}"></script>
+  <script>
+    document.getElementById('voterBtn').addEventListener('click', function() {
+      window.location.href = '/voter_login.html';
+    });
+  
+    document.getElementById('officialBtn').addEventListener('click', function() {
+      window.location.href = '/official_login.html';
+    });
+  </script>
+    
+</body>
+</html>
