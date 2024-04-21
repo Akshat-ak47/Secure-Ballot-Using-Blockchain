@@ -56,3 +56,16 @@ This project is created and maintained by :
  - Commit your changes (git commit -am 'Add new feature').
  - Push to the branch (git push origin feature/new-feature).
  - Create a new Pull Request.
+
+<h2>Additional Setup Instructions</h2>
+    <p>To integrate Twilio for authentication:</p>
+    <ul>
+        <li>Add your Twilio Auth token, SID, recipient, and number from your Twilio account to <code>views.py</code> in line 102.</li>
+    </ul>
+
+    <p>To add Tawk.to API for a chatbot:</p>
+    <ul>
+        <li>Add your Tawk.to API in <code>index.html</code> for the chatbot in line 76.</li>
+    </ul>
+</body>
+</html>
