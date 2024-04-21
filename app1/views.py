@@ -183,10 +183,10 @@ def generate_otp():
 def send_otp(request):
     otp = generate_otp()
 
-    account_sid = 'ACd9c459582c2c9c63d0edd7b2fcffc767'
-    auth_token = '0ea5a089a2cba67f09924af93c37e799'
-    twilio_phone_number = '4408272355'
-    recipient_phone_number = '+918871842515'
+    account_sid = '<Your_Accout_SID>'
+    auth_token = '<Your_AUth_Token>'
+    twilio_phone_number = '<Your_Twilio_number>'
+    recipient_phone_number = '<Recipient_Number>'
 
     twilio_client = Client(account_sid, auth_token)
 
